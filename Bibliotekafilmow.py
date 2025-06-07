@@ -1,7 +1,9 @@
 
 # Zadanie 7.4
 
+
 import random
+
 
 class Movie:
     def __init__(self, title, year, genre):
@@ -17,7 +19,7 @@ class Movie:
         return f"{self.title} ({self.year})"
 
 
-class Series(Movie):  
+class Series(Movie):
     def __init__(self, title, year, genre, season, episode):
         super().__init__(title, year, genre)
         self.season = season
@@ -27,70 +29,76 @@ class Series(Movie):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
 
 
-
-library = []
-
-
-def get_movies():
+def get_movies(library):
     return sorted(
-        [item for item in library if isinstance(item, Movie) and not isinstance(item, Series)],
+        [item for item in library if type(item) == Movie],
         key=lambda x: x.title
     )
 
-def get_series():
+
+def get_series(library):
     return sorted(
-        [item for item in library if isinstance(item, Series)],
+        [item for item in library if type(item) == Series],
         key=lambda x: x.title
     )
 
-def search(title):
+
+def search(library, title):
     return [item for item in library if title.lower() in item.title.lower()]
 
 
-def generate_views():
+def generate_views(library):
     item = random.choice(library)
     views = random.randint(1, 100)
     item.play(views)
 
-def run_generate_views():
-    for _ in range(10):
-        generate_views()
+
+def run_generate_views(library, times=10):
+    for _ in range(times):
+        generate_views(library)
 
 
-
-def top_titles(n=3, content_type=None):
+def top_titles(library, n=3, content_type=None):
     if content_type == "movie":
-        items = get_movies()
+        items = get_movies(library)
     elif content_type == "series":
-        items = get_series()
+        items = get_series(library)
     else:
         items = library
-
     return sorted(items, key=lambda x: x.plays, reverse=True)[:n]
 
 
-library.append(Movie("Pulp Fiction", 1994, "Crime"))
-library.append(Movie("The Matrix", 1999, "Sci-Fi"))
-library.append(Movie("Inception", 2010, "Thriller"))
-library.append(Series("Friends", 1994, "Comedy", 1, 1))
-library.append(Series("Breaking Bad", 2008, "Drama", 2, 3))
-library.append(Series("The Office", 2005, "Comedy", 3, 5))
 
+if __name__ == "__main__":
+    library = [
+        Movie("Pulp Fiction", 1994, "Crime"),
+        Movie("The Matrix", 1999, "Sci-Fi"),
+        Movie("Inception", 2010, "Thriller"),
+        Series("Friends", 1994, "Comedy", 1, 1),
+        Series("Breaking Bad", 2008, "Drama", 2, 3),
+        Series("The Office", 2005, "Comedy", 3, 5),
+    ]
 
-run_generate_views()
+    run_generate_views(library)
 
-print("Najpopularniejsze tytuły:")
-for item in top_titles(3):
-    print(f"{item} - {item.plays} odtworzeń")
+    print("Najpopularniejsze tytuły:")
+    for item in top_titles(library, 3):
+        print(f"{item} - {item.plays} odtworzeń")
 
-print("\nWszystkie filmy:")
-for movie in get_movies():
-    print(movie)
+    print("\nWszystkie filmy:")
+    for movie in get_movies(library):
+        print(movie)
 
-print("\nWszystkie seriale:")
-for series in get_series():
-    print(series)
+    print("\nWszystkie seriale:")
+    for series in get_series(library):
+        print(series)
 
-print("\nWyniki wyszukiwania dla 'Friends':")
-for match in search("Friends"):
-    print(match)
+    user_query = input("\nWpisz tytuł do wyszukania: ")
+results = search(library, user_query)
+
+if results:
+    print("\nWyniki wyszukiwania:")
+    for match in results:
+        print(match)
+else:
+    print("Nie znaleziono tytułu.")
