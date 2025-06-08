@@ -1,9 +1,7 @@
 
 # Zadanie 7.4
 
-
 import random
-
 
 class Movie:
     def __init__(self, title, year, genre):
@@ -12,12 +10,11 @@ class Movie:
         self.genre = genre
         self.plays = 0
 
-    def play(self, step=1):
-        self.plays += step
+    def play(self, views):
+        self.plays += views
 
     def __str__(self):
         return f"{self.title} ({self.year})"
-
 
 class Series(Movie):
     def __init__(self, title, year, genre, season, episode):
@@ -29,34 +26,26 @@ class Series(Movie):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
 
 
-def get_movies(library):
-    return sorted(
-        [item for item in library if type(item) == Movie],
-        key=lambda x: x.title
-    )
+def filter_and_sort(library, cls):
+    return sorted([item for item in library if isinstance(item, cls)], key=lambda x: x.title)
 
+def get_movies(library):
+    return filter_and_sort(library, Movie)
 
 def get_series(library):
-    return sorted(
-        [item for item in library if type(item) == Series],
-        key=lambda x: x.title
-    )
-
+    return filter_and_sort(library, Series)
 
 def search(library, title):
     return [item for item in library if title.lower() in item.title.lower()]
-
 
 def generate_views(library):
     item = random.choice(library)
     views = random.randint(1, 100)
     item.play(views)
 
-
 def run_generate_views(library, times=10):
     for _ in range(times):
         generate_views(library)
-
 
 def top_titles(library, n=3, content_type=None):
     if content_type == "movie":
@@ -65,8 +54,8 @@ def top_titles(library, n=3, content_type=None):
         items = get_series(library)
     else:
         items = library
-    return sorted(items, key=lambda x: x.plays, reverse=True)[:n]
 
+    return sorted(items, key=lambda x: x.plays, reverse=True)[:n]
 
 
 if __name__ == "__main__":
@@ -94,11 +83,11 @@ if __name__ == "__main__":
         print(series)
 
     user_query = input("\nWpisz tytuł do wyszukania: ")
-results = search(library, user_query)
+    results = search(library, user_query)
 
-if results:
-    print("\nWyniki wyszukiwania:")
-    for match in results:
-        print(match)
-else:
-    print("Nie znaleziono tytułu.")
+    if results:
+        print("\nWyniki wyszukiwania:")
+        for match in results:
+            print(match)
+    else:
+        print("Nie znaleziono tytułu.")
