@@ -1,7 +1,7 @@
 
-# Zadanie 7.4
 
 import random
+
 
 class Movie:
     def __init__(self, title, year, genre):
@@ -16,6 +16,7 @@ class Movie:
     def __str__(self):
         return f"{self.title} ({self.year})"
 
+
 class Series(Movie):
     def __init__(self, title, year, genre, season, episode):
         super().__init__(title, year, genre)
@@ -29,23 +30,29 @@ class Series(Movie):
 def filter_and_sort(library, cls):
     return sorted([item for item in library if isinstance(item, cls)], key=lambda x: x.title)
 
+
 def get_movies(library):
     return filter_and_sort(library, Movie)
+
 
 def get_series(library):
     return filter_and_sort(library, Series)
 
+
 def search(library, title):
     return [item for item in library if title.lower() in item.title.lower()]
+
 
 def generate_views(library):
     item = random.choice(library)
     views = random.randint(1, 100)
     item.play(views)
 
+
 def run_generate_views(library, times=10):
     for _ in range(times):
         generate_views(library)
+
 
 def top_titles(library, n=3, content_type=None):
     if content_type == "movie":
@@ -54,13 +61,14 @@ def top_titles(library, n=3, content_type=None):
         items = get_series(library)
     else:
         items = library
-
     return sorted(items, key=lambda x: x.plays, reverse=True)[:n]
 
 
+
 if __name__ == "__main__":
+    
     library = [
-        Movie("Pulp Fiction", 1994, "Crime"),
+         Movie("Pulp Fiction", 1994, "Crime"),
         Movie("The Matrix", 1999, "Sci-Fi"),
         Movie("Inception", 2010, "Thriller"),
         Series("Friends", 1994, "Comedy", 1, 1),
@@ -68,20 +76,17 @@ if __name__ == "__main__":
         Series("The Office", 2005, "Comedy", 3, 5),
     ]
 
-    run_generate_views(library)
+    run_generate_views(library, times=20)
 
-    print("Najpopularniejsze tytuły:")
-    for item in top_titles(library, 3):
-        print(f"{item} - {item.plays} odtworzeń")
-
-    print("\nWszystkie filmy:")
+    print("\nFilmy:")
     for movie in get_movies(library):
-        print(movie)
+        print(f"{movie} - {movie.plays} odtworzeń")
 
-    print("\nWszystkie seriale:")
+    print("\nSeriale:")
     for series in get_series(library):
-        print(series)
+        print(f"{series} - {series.plays} odtworzeń")
 
+    
     user_query = input("\nWpisz tytuł do wyszukania: ")
     results = search(library, user_query)
 
