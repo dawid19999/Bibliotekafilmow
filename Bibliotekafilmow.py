@@ -27,8 +27,9 @@ class Series(Movie):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
 
 
+
 def filter_and_sort(library, cls):
-    return sorted([item for item in library if isinstance(item, cls)], key=lambda x: x.title) #W linijce 31 musi być isistance ponieważ gdy nie będzie isistance to niebędzie uwzględnione dziedziczenie czyli Series nie zostanie uznane za Movie
+    return sorted([item for item in library if type(item) == cls], key=lambda x: x.title)
 
 
 def get_movies(library):
@@ -94,5 +95,4 @@ if __name__ == "__main__":
         print("\nWyniki wyszukiwania:")
         for match in results:
             print(match)
-    else:
-        print("Nie znaleziono tytułu.")
+    
