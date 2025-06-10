@@ -28,7 +28,7 @@ class Series(Movie):
 
 
 def filter_and_sort(library, cls):
-    return sorted([item for item in library if isinstance(item, cls)], key=lambda x: x.title)
+    return sorted([item for item in library if isinstance(item, cls)], key=lambda x: x.title) #W linijce 31 musi być isistance ponieważ gdy nie będzie isistance to niebędzie uwzględnione dziedziczenie czyli Series nie zostanie uznane za Movie
 
 
 def get_movies(library):
