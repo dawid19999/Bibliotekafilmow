@@ -4,6 +4,8 @@ import random
 
 
 class Movie:
+    content_type = "movie"  
+
     def __init__(self, title, year, genre):
         self.title = title
         self.year = year
@@ -18,6 +20,8 @@ class Movie:
 
 
 class Series(Movie):
+    content_type = "series"  
+
     def __init__(self, title, year, genre, season, episode):
         super().__init__(title, year, genre)
         self.season = season
@@ -27,16 +31,16 @@ class Series(Movie):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
 
 
-def filter_and_sort(library, cls):
-    return sorted([item for item in library if isinstance(item, cls)], key=lambda x: x.title)
+def filter_and_sort(library, content_type):
+    return sorted([item for item in library if item.content_type == content_type], key=lambda x: x.title)
 
 
 def get_movies(library):
-    return filter_and_sort(library, Movie)
+    return filter_and_sort(library, "movie")
 
 
 def get_series(library):
-    return filter_and_sort(library, Series)
+    return filter_and_sort(library, "series")
 
 
 def search(library, title):
@@ -79,7 +83,6 @@ if __name__ == "__main__":
 
     print("\nFilmy:")
     for movie in get_movies(library):
-        if hasattr(movie, 'season'): continue
         print(f"{movie} - {movie.plays} odtworzeń")
 
     print("\nSeriale:")
