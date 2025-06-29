@@ -1,5 +1,4 @@
 
-
 import random
 
 
@@ -100,4 +99,5 @@ if __name__ == "__main__":
         print("\nWyniki wyszukiwania:")
         for match in results:
             print(match)
+
     
