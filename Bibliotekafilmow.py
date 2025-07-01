@@ -69,6 +69,9 @@ if __name__ == "__main__":
 
     run_generate_views(library, times=20)
 
+    biblioteka=f"Biblioteka filmów:"
+    print(biblioteka)
+
     print("\nFilmy:")
     for movie in get_movies(library):
         print(f"{movie} - {movie.plays} odtworzeń")
