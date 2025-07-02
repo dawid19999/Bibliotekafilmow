@@ -10,12 +10,18 @@ class Video:
         self.year = year
         self.genre = genre
         self.plays = 0
+        
+
 
     def play(self):
         self.plays += 1
 
 
 class Movie(Video):
+    def __init__(self, title, year, genre):
+        super().__init__(title, year, genre)
+        self.type = "movie"  
+
     def __str__(self):
         return f"{self.title} ({self.year})"
 
@@ -25,6 +31,7 @@ class Series(Video):
         super().__init__(title, year, genre)
         self.season = season
         self.episode = episode
+        self.type = "series"  
 
     def __str__(self):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
@@ -32,7 +39,7 @@ class Series(Video):
 
 class MoviesLibrary:
     def __init__(self, library):
-        self.movies = [item for item in library if isinstance(item, Movie)]
+        self.movies = [item for item in library if item.type == "movie"]
 
     def get_all(self):
         return sorted(self.movies, key=lambda x: x.title)
@@ -40,7 +47,7 @@ class MoviesLibrary:
 
 class SeriesLibrary:
     def __init__(self, library):
-        self.series = [item for item in library if isinstance(item, Series)]
+        self.series = [item for item in library if item.type == "series"]
 
     def get_all(self):
         return sorted(self.series, key=lambda x: x.title)
@@ -82,7 +89,7 @@ if __name__ == "__main__":
     movies_library = MoviesLibrary(library)
     series_library = SeriesLibrary(library)
 
-    today = datetime.now().strftime("%d.%m.%Y")
+    today = datetime.now().strftime("%d.%m.%y")
     print(f"\nNajpopularniejsze filmy i seriale dnia {today}:")
 
     top_items = top_titles(library, 3)
@@ -104,5 +111,4 @@ if __name__ == "__main__":
         print("\nWyniki wyszukiwania:")
         for match in results:
             print(match)
-
     
