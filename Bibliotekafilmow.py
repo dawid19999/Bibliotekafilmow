@@ -1,5 +1,7 @@
+  
 
 import random
+from datetime import datetime
 
 
 class Video:
@@ -12,9 +14,11 @@ class Video:
     def play(self):
         self.plays += 1
 
+
 class Movie(Video):
     def __str__(self):
         return f"{self.title} ({self.year})"
+
 
 class Series(Video):
     def __init__(self, title, year, genre, season, episode):
@@ -25,36 +29,40 @@ class Series(Video):
     def __str__(self):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
 
-def get_movies(library):
-    movies = [item for item in library if type(item) == Movie]
-    return sorted(movies, key=lambda x: x.title)
 
-def get_series(library):
-    series = [item for item in library if type(item) == Series]
-    return sorted(series, key=lambda x: x.title)
+class MoviesLibrary:
+    def __init__(self, library):
+        self.movies = [item for item in library if isinstance(item, Movie)]
+
+    def get_all(self):
+        return sorted(self.movies, key=lambda x: x.title)
+
+
+class SeriesLibrary:
+    def __init__(self, library):
+        self.series = [item for item in library if isinstance(item, Series)]
+
+    def get_all(self):
+        return sorted(self.series, key=lambda x: x.title)
+
 
 def search(library, title):
     return [item for item in library if title.lower() in item.title.lower()]
 
+
 def generate_views(library):
     item = random.choice(library)
     views = random.randint(1, 100)
-    for _ in range(views):
-        item.play()
+    item.plays += views
 
 
 def run_generate_views(library, times=10):
     for _ in range(times):
         generate_views(library)
 
-def top_titles(library, n=3, content_type=None):
-    if content_type == "movie":
-        items = get_movies(library)
-    elif content_type == "series":
-        items = get_series(library)
-    else:
-        items = library
-    return sorted(items, key=lambda x: x.plays, reverse=True)[:n]
+
+def top_titles(library, n=3):
+    return sorted(library, key=lambda x: x.plays, reverse=True)[:n]
 
 
 if __name__ == "__main__":
@@ -67,22 +75,27 @@ if __name__ == "__main__":
         Series("The Office", 2005, "Comedy", 3, 5),
     ]
 
+    print("Biblioteka filmów.")
+
     run_generate_views(library, times=20)
 
-    biblioteka=f"Biblioteka filmów:"
-    print(biblioteka)
+    movies_library = MoviesLibrary(library)
+    series_library = SeriesLibrary(library)
+
+    today = datetime.now().strftime("%d.%m.%Y")
+    print(f"\nNajpopularniejsze filmy i seriale dnia {today}:")
+
+    top_items = top_titles(library, 3)
+    for item in top_items:
+        print(f"{item} - {item.plays} odtworzeń")
 
     print("\nFilmy:")
-    for movie in get_movies(library):
+    for movie in movies_library.get_all():
         print(f"{movie} - {movie.plays} odtworzeń")
 
     print("\nSeriale:")
-    for series in get_series(library):
+    for series in series_library.get_all():
         print(f"{series} - {series.plays} odtworzeń")
-
-    print("\nTop tytuły:")
-    for item in top_titles(library, 3):
-        print(f"{item} - {item.plays} odtworzeń")
 
     user_query = input("\nWpisz tytuł do wyszukania: ")
     results = search(library, user_query)
