@@ -4,53 +4,42 @@ import random
 from datetime import datetime
 
 
-class Video:
+class Movie:
     def __init__(self, title, year, genre):
         self.title = title
         self.year = year
         self.genre = genre
         self.plays = 0
+        self.type = "movie"
         
-
-
-    def play(self):
+  def play(self):
         self.plays += 1
 
-
-class Movie(Video):
-    def __init__(self, title, year, genre):
-        super().__init__(title, year, genre)
-        self.type = "movie"  
-
-    def __str__(self):
+  def __str__(self):
         return f"{self.title} ({self.year})"
 
 
-class Series(Video):
+class Series(Movie):  
     def __init__(self, title, year, genre, season, episode):
         super().__init__(title, year, genre)
         self.season = season
         self.episode = episode
-        self.type = "series"  
+        self.type = "series"
 
     def __str__(self):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
 
 
-class MoviesLibrary:
-    def __init__(self, library):
-        self.movies = [item for item in library if item.type == "movie"]
-
-    def get_all(self):
-        return sorted(self.movies, key=lambda x: x.title)
+def filter_and_sort(library, type_name):
+    return sorted([item for item in library if item.type == type_name], key=lambda x: x.title)
 
 
-class SeriesLibrary:
-    def __init__(self, library):
-        self.series = [item for item in library if item.type == "series"]
+def get_movies(library):
+    return filter_and_sort(library, "movie")
 
-    def get_all(self):
-        return sorted(self.series, key=lambda x: x.title)
+
+def get_series(library):
+    return filter_and_sort(library, "series")
 
 
 def search(library, title):
@@ -82,12 +71,9 @@ if __name__ == "__main__":
         Series("The Office", 2005, "Comedy", 3, 5),
     ]
 
-    print("Biblioteka filmów.")
+    print("Biblioteka filmów i seriali.")
 
     run_generate_views(library, times=20)
-
-    movies_library = MoviesLibrary(library)
-    series_library = SeriesLibrary(library)
 
     today = datetime.now().strftime("%d.%m.%y")
     print(f"\nNajpopularniejsze filmy i seriale dnia {today}:")
@@ -97,11 +83,11 @@ if __name__ == "__main__":
         print(f"{item} - {item.plays} odtworzeń")
 
     print("\nFilmy:")
-    for movie in movies_library.get_all():
+    for movie in get_movies(library):
         print(f"{movie} - {movie.plays} odtworzeń")
 
     print("\nSeriale:")
-    for series in series_library.get_all():
+    for series in get_series(library):
         print(f"{series} - {series.plays} odtworzeń")
 
     user_query = input("\nWpisz tytuł do wyszukania: ")
@@ -111,4 +97,5 @@ if __name__ == "__main__":
         print("\nWyniki wyszukiwania:")
         for match in results:
             print(match)
+
     
