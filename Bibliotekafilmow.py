@@ -1,4 +1,5 @@
-  
+
+# Zrobiłem najlepiej jak umiałem. Lepiej nie umiem.
 
 import random
 from datetime import datetime
