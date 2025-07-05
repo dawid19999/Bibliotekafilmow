@@ -1,5 +1,5 @@
 
-# Zrobiłem najlepiej jak umiałem. Lepiej nie umiem.
+# Zrobiłem najlepiej jak umiałem. 
 
 import random
 from datetime import datetime
