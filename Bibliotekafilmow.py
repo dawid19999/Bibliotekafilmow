@@ -1,5 +1,4 @@
 
-# Zrobiłem najlepiej jak umiałem. 
 
 import random
 from datetime import datetime
@@ -11,7 +10,7 @@ class Movie:
         self.year = year
         self.genre = genre
         self.plays = 0
-        self.type = "movie"
+        self.category = "movie"
         
   def play(self):
         self.plays += 1
@@ -25,14 +24,14 @@ class Series(Movie):
         super().__init__(title, year, genre)
         self.season = season
         self.episode = episode
-        self.type = "series"
+        self.category = "series"
 
     def __str__(self):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
 
 
-def filter_and_sort(library, type_name):
-    return sorted([item for item in library if item.type == type_name], key=lambda x: x.title)
+def filter_and_sort(library, category_name):
+    return sorted([item for item in library if item.category == category_name], key=lambda x: x.title)
 
 
 def get_movies(library):
