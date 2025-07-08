@@ -29,6 +29,9 @@ class Series(Movie):
     def __str__(self):
         return f"{self.title} S{self.season:02}E{self.episode:02}"
 
+def filter_and_sort(library, category_name):
+    return sorted([item for item in library if item.category == category_name], key=lambda x: x.title)
+
 
 def get_movies(library):
     movies = [item for item in library if type(item) == Movie]
