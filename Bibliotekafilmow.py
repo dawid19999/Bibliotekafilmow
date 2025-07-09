@@ -34,14 +34,11 @@ def filter_and_sort(library, category_name):
 
 
 def get_movies(library):
-    movies = [item for item in library if type(item) == Movie]
-    return sorted(movies, key=lambda x: x.title)
+    return filter_and_sort(library, "movie")
 
 
 def get_series(library):
-    series = [item for item in library if type(item) == Series]
-    return sorted(series, key=lambda x: x.title)
-
+    return filter_and_sort(library, "series")
 
 def search(library, title):
     return [item for item in library if title.lower() in item.title.lower()]
