@@ -33,12 +33,12 @@ def filter_and_sort(library, cls):
     return sorted([item for item in library if type(item) == cls], key=lambda x: x.title)
 
 
-def get_movies(library):
-    return filter_and_sort(library, "movie")
-
+def get_movies(library): 
+    return filter_and_sort(library, Movie)
 
 def get_series(library):
-    return filter_and_sort(library, "series")
+    return filter_and_sort(library, Series)
+    
 
 def search(library, title):
     return [item for item in library if title.lower() in item.title.lower()]
